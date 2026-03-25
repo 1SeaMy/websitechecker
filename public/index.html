@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Website Checker</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 600px;
+      margin: 50px auto;
+      text-align: center;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    pre {
+      text-align: left;
+      background: #f4f4f4;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    .up { color: green; }
+    .down { color: red; }
+    .degraded { color: orange; }
+  </style>
+</head>
+<body>
+
+  <h2>🌐 Website Checker</h2>
+
+  <input id="url" placeholder="https://example.com" />
+  <br>
+  <button onclick="check()">Check</button>
+
+  <h3 id="status"></h3>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function check() {
+      const url = document.getElementById("url").value;
+
+      const res = await fetch("/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url })
+      });
+
+      const data = await res.json();
+
+      document.getElementById("result").innerText =
+        JSON.stringify(data, null, 2);
+
+      const statusEl = document.getElementById("status");
+      statusEl.innerText = data.status.toUpperCase();
+      statusEl.className = data.status;
+    }
+  </script>
+
+</body>
+</html>

@@ -2,8 +2,17 @@ import express from "express";
 import { chromium } from "playwright";
 
 const app = express();
-app.use(express.json());
 
+// Middleware
+app.use(express.json());
+app.use(express.static("public")); // 👈 UI için
+
+// Ana sayfa (opsiyonel ama güzel)
+app.get("/", (req, res) => {
+  res.send("Website Checker API çalışıyor 🚀");
+});
+
+// Check endpoint
 app.post("/check", async (req, res) => {
   const { url, selector } = req.body;
 
@@ -12,7 +21,6 @@ app.post("/check", async (req, res) => {
   }
 
   const startTime = Date.now();
-
   let browser;
 
   try {
@@ -72,6 +80,7 @@ app.post("/check", async (req, res) => {
   }
 });
 
+// Server başlat
 app.listen(3000, () => {
-  console.log("Server 3000 portunda çalışıyor");
+  console.log("🚀 Server http://localhost:3000 adresinde çalışıyor");
 });
